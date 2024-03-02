@@ -51,6 +51,7 @@ if [ -f "$FILE" ]; then
 	sudo unlink "$FILE"
 fi
 
+echo -e "\n1️⃣ 5️⃣ - Create new nginx reverse proxy configuration file."
 cat <<EOF >new.conf
 server {
     listen 80;
