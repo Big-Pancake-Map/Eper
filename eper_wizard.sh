@@ -45,10 +45,10 @@ echo -e "\n1️⃣ 3️⃣ - Prepare port 80."
 sudo iptables -I INPUT -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 sudo iptables -I OUTPUT -p tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-echo -e "\1️⃣ 4️⃣ - Remove the default configration file."
+echo -e "\n1️⃣ 4️⃣ - Remove the default configration file."
 FILE=/etc/nginx/sites-enabled/default
 if [ -f "$FILE" ]; then
-	 echo "$FILE exists."
+	sudo unlink "$FILE"
 fi
 
 cat <<EOF >new.conf
