@@ -34,3 +34,39 @@ sudo apt-get install docker-compose-plugin
 
 echo -e "\n🔟 - Check Docker Compose version."
 docker compose version
+
+echo -e "\n1️⃣1️⃣ - Install NGINX."
+sudo apt install nginx
+
+echo -e "\n1️⃣2️⃣ - start NGINX."
+sudo systemctl start nginx.service
+
+echo -e "\n1️⃣3️⃣ - Prepare port 80."
+sudo iptables -I INPUT -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo iptables -I OUTPUT -p tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+echo -e "\1️⃣4️⃣ - Remove the default configration file."
+sudo unlink /etc/nginx/sites-enabled/default
+
+cat <<EOF >new.conf
+server {
+    listen 80;
+    listen [::]:80;    
+
+    server_name 130.61.35.12 www.130.61.35.12;    
+
+    location / {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    location /pgadmin4 {
+       proxy_pass http://127.0.0.1:8888;
+       proxy_set_header X-Script-Name /pgadmin4;
+    }
+}
+EOF
