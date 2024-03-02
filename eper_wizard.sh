@@ -46,7 +46,10 @@ sudo iptables -I INPUT -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED 
 sudo iptables -I OUTPUT -p tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
 echo -e "\1️⃣4️⃣ - Remove the default configration file."
-sudo unlink /etc/nginx/sites-enabled/default
+FILE=/etc/nginx/sites-enabled/default
+if [ -f "$FILE" ]; then
+	sudo unlink /etc/nginx/sites-enabled/default
+fi
 
 cat <<EOF >new.conf
 server {
