@@ -35,24 +35,27 @@ sudo apt-get install docker-compose-plugin
 echo -e "\n🔟 - Check Docker Compose version."
 docker compose version
 
-echo -e "\n1️⃣ 1️⃣ - Install NGINX."
+echo -e "\n1️⃣ 1️⃣  - Install NGINX."
 sudo apt install nginx
 
-echo -e "\n1️⃣ 2️⃣ - start NGINX."
+echo -e "\n1️⃣ 2️⃣  - start NGINX."
 sudo systemctl start nginx.service
 
-echo -e "\n1️⃣ 3️⃣ - Prepare port 80."
+echo -e "\n1️⃣ 3️⃣  - Prepare port 80."
 sudo iptables -I INPUT -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 sudo iptables -I OUTPUT -p tcp --sport 80 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
-echo -e "\n1️⃣ 4️⃣ - Remove the default configration file."
+echo -e "\n1️⃣ 4️⃣  - Remove the default configration file."
 FILE=/etc/nginx/sites-enabled/default
 if [ -f "$FILE" ]; then
 	sudo unlink "$FILE"
 fi
 
-echo -e "\n1️⃣ 5️⃣ - Create new nginx reverse proxy configuration file."
-cat <<EOF >new.conf
+echo -e "\n1️⃣ 5️⃣  - Create new nginx reverse proxy configuration file."
+read -p "What is your app name: " app_name
+echo "Creating $app_name.conf file..."
+
+cat <<EOF >app_name.conf
 server {
     listen 80;
     listen [::]:80;    
