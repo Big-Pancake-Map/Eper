@@ -4,12 +4,12 @@ echo "***************************"
 echo "* Welcome to 🍓 Wizard 🪄  *"
 echo "***************************"
 
+apt install sudo -y
 echo -e "\n1️⃣  - Get updates and upgrades."
-#
 sudo apt-get update & sudo apt-get upgrade -y
-#
+
 echo -e "\n3️⃣  - Install a few prerequisite packages which let apt use packages over HTTPS."
-#sudo apt install apt-transport-https ca-certificates curl software-properties-common
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
 #
 echo -e "\n4️⃣  - Then add the GPG key for the official Docker repository to your system."
 #curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
